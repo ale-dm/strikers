@@ -9,7 +9,7 @@ Modificar el mod Xtreme 2.0 (y la versión con textos en castellano) de Strikers
 - Cambio de altura de Endo (jugador id 1) con `build_dat15_overlay.py`: se ve en el campo.
 - Partidas: el mod lee `xtreme2.sav` (Xtreme 2.0) o `xtreme3.sav` (Infinity), según el código de cada versión (`CustomCode.bin` fija el nombre del archivo).
 
-## Lo que no funciona todavía
+## Lo que no funciona todavía (ver docs/pruebas.md)
 - Infinity (paquete de Riivolution completo) no arranca sobre la base traducida: se queda en negro. Las piezas por separado (datos, gráficos, audio) sí arrancan, pero no contienen el código de Infinity activo.
 - En la pantalla de título no aparecen Destin y Harper (la guía del paquete dice que sustituyen a Arion y JP).
 
