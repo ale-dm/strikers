@@ -28,7 +28,7 @@ Modificar el mod Xtreme 2.0 (y la versión con textos en castellano) de Strikers
 
 ## Añadir jugadores: límites conocidos (sin comprobar en el juego)
 - Los ids de serie son 1–411 (`includes/enums.h` de obluda3/strikers2013-xtreme). Un jugador nuevo tendría id 412 o superior.
-- `source/randomMode.cpp` elige `shdRndi(1, 0x19C)` (1–412 de rango, con banned) y cuenta reclutados con `i < P_12502YOBI` (411): un jugador nuevo no entra en el aleatorio ni en esos contadores sin cambiar ese código.
+- `source/randomMode.cpp` elige con `shdRndi(1, 0x19C)` (0x19C = 412; según si `shdRndi` incluye el límite superior, llega hasta 411 o 412) y cuenta reclutados con `i < P_12502YOBI` (411). Un jugador nuevo no entraría en el aleatorio ni en esos contadores sin cambiar ese código. No he comprobado la semántica de `shdRndi`.
 - Las banderas de jugador (reclutado, desbloqueado) están indexadas por id en la partida; no está claro el tamaño de esa tabla.
 - Hace falta que el jugador esté en una plantilla de equipo, con modelos, rostro y textos. Eso está en otros archivos, no en 40015.
 

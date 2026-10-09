@@ -26,7 +26,7 @@ hace falta tu propia copia legal del juego y los parches se obtienen de sus auto
    Para añadir un jugador nuevo, copia el registro de otro y le asigna el siguiente id libre:
    `python scripts/player_edit.py <15.bin_original> <15.bin_salida> --add-from 1 name=NuevoJugador`
    El juego puede no mostrar un jugador con id nuevo: ver `docs/estado.md`.
-6. Poner `<15.bin_salida>` en una carpeta de prueba de Riivolution (`<carpeta>/xtreme2_dev/files/Modified/dat/15.bin`) y superponerla sobre el mod con un descriptor propio.
+5. Poner `<15.bin_salida>` en una carpeta de prueba de Riivolution (`<carpeta>/xtreme2_dev/files/Modified/dat/15.bin`) y superponerla sobre el mod con un descriptor propio.
 
 Requisitos: Python 3.7 o superior. No hace falta CodeWarrior ni Kamek para los cambios de datos.
 
