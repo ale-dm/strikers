@@ -28,6 +28,7 @@ FIELDS = {
     "scale":          (0x40,  ">i", "altura, 1000 = 100 %"),
     "shadow":         (0x44,  ">i", "tamaño de la sombra"),
     "team":           (0x50,  ">i", "equipo"),
+    "emblem":         (0x54,  ">i", "emblema del equipo"),
     "position":       (0x5C,  ">i", "posición (ver ENUMS)"),
     "voice":          (0x104, ">i", "voz"),
     "voice_alias":    (0x108, ">i", "alias de voz"),
@@ -70,6 +71,20 @@ def add_player(d, src_id):
     d += record
     struct.pack_into(">I", d, HEADER, count + 1)
     return len(d) - SIZE, new_id
+
+def list_clashes(d, off):
+    # La doc de Xtreme: si dos jugadores comparten equipo y posición en la lista, solo sale el de id menor.
+    team = read_field(d, off, "team")
+    lpos = read_field(d, off, "list_pos")
+    count = struct.unpack(">I", d[HEADER:HEADER+4])[0]
+    clashes = []
+    for k in range(count - 1):
+        o = REC + k * SIZE
+        if o == off or o + SIZE > len(d):
+            continue
+        if read_field(d, o, "team") == team and read_field(d, o, "list_pos") == lpos:
+            clashes.append(struct.unpack(">i", d[o:o+4])[0])
+    return clashes
 
 def read_field(d, off, name):
     foff, fmt, _ = FIELDS[name]
@@ -129,6 +144,9 @@ def main(argv=None):
     if args.add_from is not None:
         off, new_id = add_player(d, args.add_from)
         print("nuevo jugador id %d (copia de %d)" % (new_id, args.add_from))
+        if not any(item.startswith(("team=", "list_pos=")) for item in args.cambios):
+            print("aviso: la copia tiene el mismo equipo y posición en la lista que el original; "
+                  "cámbialos (team=, list_pos=) o no aparecerá.")
     else:
         off = find_player(d, args.id)
 
@@ -139,6 +157,11 @@ def main(argv=None):
         old = read_field(d, off, name)
         write_field(d, off, name, parse_value(name, text, parser), parser)
         print("%s: %s -> %s" % (name, old, read_field(d, off, name)))
+
+    clashes = list_clashes(d, off)
+    if clashes:
+        print("aviso: comparte equipo y posición en la lista con los ids %s; "
+              "solo aparecerá el de id menor." % ", ".join(str(c) for c in clashes))
 
     enc = compress_literal(bytes(d))
     assert decompress(enc) == bytes(d), "fallo al comprobar la recompresion"
