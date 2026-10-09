@@ -35,8 +35,10 @@ Modificar el mod Xtreme 2.0 (y la versión con textos en castellano) de Strikers
 ## Cómo se activan jugadores (docs de Xtreme, sin comprobar en el juego)
 - Según la documentación de Xtreme (obluda3.github.io/strikers, sección Players): un jugador aparece si tiene equipo y emblema válidos y una posición en la lista válida. Si dos comparten equipo y posición en la lista, solo sale el de id menor.
 - `price` > 0 habilita al jugador; `-1` lo desbloquea por defecto.
-- Los mods no crean ids nuevos: reutilizan los registros que ya existen. El editor de nombres marca 14 jugadores como no usados (`Common/playernames.txt` del editor): ids 267, 268, 269, 271, 349, 361, 392, 397, 398, 404, 405, 406, 410 y 411.
-- Discrepancia por revisar: el id 411 es `P_12502YOBI` en el enum de Xtreme, pero "Fran MM (Unused)" en la lista del editor.
+- Los mods no crean ids nuevos: reutilizan registros que ya existen. La documentación dice que hay jugadores "no usados" (cita a Shinoyama y a la forma miximax de Saru) y otros "presentes pero no jugables" (managers y entrenadores).
+- El editor marca 14 jugadores como "Unused", pero la etiqueta no es fiable. Comparada con el código de Xtreme (`source/`), solo 3 no aparecen referenciados: 267 Hikita Goushirou, 349 Shinoyama Mitsuru (confirmado por la doc) y 406 Afuro Terumi (Unused). Los demás aparecen en listas de Xtreme (premixed, armed, miximax, banlist), así que no son candidatos seguros.
+- El id 411 no es "Fran MM": el enum de Xtreme lo llama `P_12502YOBI` y el código lo usa como personaje activo (premixed, armed, miximax). Se descarta como candidato.
+- Nada de esto está comprobado en el juego: referenciado en el código no significa jugable.
 - `player_edit.py` avisa cuando una copia (`--add-from`) o una edición deja a dos jugadores con el mismo equipo y posición en la lista.
 
 ## Próximos pasos
