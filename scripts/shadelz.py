@@ -59,6 +59,15 @@ def decompress(c):
             for i in range(count): out[op] = c[ip]; op += 1; ip += 1
     return bytes(out)
 
+def compress_literal(data):
+    # Solo bloques literales (sin back-references): el archivo crece, pero lo acepta el juego.
+    out = bytearray(); pos = 0
+    while pos < len(data):
+        count = min(0x1FFF, len(data) - pos)
+        out += bytes([((count & 0x1F00) >> 8) | 0x20, count & 0xFF])
+        out += data[pos:pos+count]; pos += count
+    return bytes(out)
+
 if __name__ == "__main__":
     src, dst = sys.argv[1], sys.argv[2]
     data = decompress(open(src, "rb").read())

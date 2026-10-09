@@ -16,8 +16,14 @@ Modificar el mod Xtreme 2.0 (y la versión con textos en castellano) de Strikers
 ## Formato del archivo de jugadores (`dat.bin` entrada 40015)
 - Comprimido con ShadeLz sin cabecera (ver `scripts/shadelz.py`).
 - Tras descomprimir: contador de jugadores (+1) en `0x10` (big endian); registros desde `0xFA4`, de `0x148` bytes cada uno.
-- Dentro de un registro: `0x40` = Scale (altura, 1000 = 100 %), `0x14` = nombre interno, `0xF4` = elemento, `0xF8` = perfil de carga, `0x110` = precio.
-- Fuente: [Strikers2013Editor](https://github.com/obluda3/Strikers2013Editor), archivo `PlayerDef.cs`.
+- Dentro de un registro: `0x40` = Scale (altura, 1000 = 100 %), `0x14` = nombre interno (ASCII, 24 bytes), `0xF4` = elemento, `0xF8` = perfil de carga, `0x110` = precio (int16).
+- Campos que edita `scripts/player_edit.py`: name, gender (0x2C), bodytype (0x3C), scale (0x40), shadow (0x44), team (0x50), position (0x5C), voice (0x104), voice_alias (0x108), element (0xF4), charge (0xF8), price (0x110, int16), list_pos (0x112, int16), team_list_pos (0x114).
+- Fuente: [Strikers2013Editor](https://github.com/obluda3/Strikers2013Editor), archivo `Strikers2013Editor/Logic/PlayerDef.cs`. Los offsets se revisaron contra esa clase: suman 0x148 bytes por registro.
+- Los registros se buscan por id (no por posición). Cómo se leen: `Forms/PlayerEditor.cs`, con `count - 1` registros desde `0xFA4`.
+
+## Verificado sin el juego
+- `player_edit.py` con un `15.bin` sintético: cada edición cambia solo los bytes del campo; el resto de jugadores queda igual; los valores fuera de rango o mal escritos dan error. `build_dat15_overlay.py` produce la misma salida byte a byte que la versión anterior.
+- Pendiente: comprobar en Dolphin los valores de `element`, `charge` y `price`, y que el juego acepta el archivo con varios cambios a la vez.
 
 ## Próximos pasos
 1. Investigar por qué el código de Infinity no arranca sobre la base traducida.
