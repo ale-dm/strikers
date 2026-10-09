@@ -9,6 +9,7 @@ hace falta tu propia copia legal del juego y los parches se obtienen de sus auto
 - `scripts/shadelz.py`: descompresor/compresor ShadeLz (formato de `dat.bin`), port en Python de Strikers2013-Tools.
 - `scripts/player_edit.py`: lee y cambia campos de un jugador (por id) en `Modified/dat/15.bin` (archivo 40015 de jugadores) y lo escribe como bloques sin comprimir, listo para Riivolution.
 - `scripts/build_dat15_overlay.py`: atajo de `player_edit.py` que cambia solo la altura (Scale) de Endo (id 1).
+- `scripts/team_gecko.py`: genera códigos Gecko que escriben el equipo actual en memoria de Dolphin (port del teambuilder, con validaciones). No modifica archivos. `scripts/test_team_gecko.py` son sus pruebas.
 - `scripts/dol_peek.py`: muestra los bytes de un `main.dol` en direcciones concretas, para comparar ejecutables de distintas revisiones.
 - `docs/estado.md`: estado del proyecto y pruebas realizadas.
 - `docs/referencia_jugadores.md`: valores de `element`, `bodytype`, `gender`, `position` y nombres de los perfiles de carga (`charge`).

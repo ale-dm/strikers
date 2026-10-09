@@ -77,6 +77,11 @@ Lo que cambia respecto a lo anterior:
 - Para **equipos** hay una vía sin tocar archivos (Gecko, solo equipo actual). La vía por archivo sigue bloqueada por el índice de dat del archivo de equipos.
 - Las **listas de nombres no coinciden** entre fuentes para los ids no usados: teambuilder llama 349 a "Aum Nirvana" y 411 a "Flora Miximax"; el editor llama 349 a Shinoyama y 411 a Fran MM; el enum de Xtreme llama 411 a Yobi. Hay que comprobarlo antes de activar nada.
 
+## Generador de códigos Gecko para equipos (`scripts/team_gecko.py`)
+- Port de `CheatCode.cs` del teambuilder con validaciones: nombre máximo 16 bytes Shift-JIS (el teambuilder lo corta), máximo 16 jugadores, sin repetidos, ids 1–411.
+- Las pruebas comparan la salida con valores calculados a mano desde el código C#. **No se ha ejecutado el C# (no hay .NET aquí)** y **no se ha probado en Dolphin**.
+- Sin comprobar: que el tipo `02` escriba 32 bits como asumimos, y que el juego acepte ids de jugador repetidos o emblemas por encima de 57 (la lista del teambuilder).
+
 ## Próximos pasos
 1. Investigar por qué el código de Infinity no arranca sobre la base traducida.
 2. Probar cambios de datos sencillos (perfil de carga, precio) con el script de superposición.
