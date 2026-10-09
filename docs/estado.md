@@ -67,6 +67,16 @@ Fuentes: `Strikers2013Editor` (obluda3), documentación de Xtreme y `xtreme`. Na
 
 Lo más directo sin el juego: documentar y preparar un editor de movimientos similar a `player_edit.py`. Hay que verificar antes el tamaño exacto del registro en `Move.cs`, porque tiene muchos campos sin nombre.
 
+## Repos de obluda3 revisados (lectura, sin archivos del juego)
+- **strikers2013-re-notes** (notas de ingeniería inversa): formato de `TEAM_DEF` y `TEAM_PLAYER`, tabla de `PlayerDef` (con inicio 0xE5C, distinto del 0xFA4 que usa el editor; el editor lee archivos reales, así que confiamos en 0xFA4), desbloqueo de movimientos por kizuna (`main.dol` @0x804C8C50), tabla de miximax (`main.dol` @0x804c8b90), tabla de uniformes (`main.dol` @0x804D08B8), `wazainfo` (tamaño 0x8c), claves, SHTX/TEXCUT/SSAD, archivos y códigos Gecko.
+- **strikers2013-teambuilder**: genera **códigos Gecko** que escriben el equipo actual en memoria: nombre (0x80526312), emblema (0x8058D868), uniforme (0x8058A05E) y los ids de los 16 jugadores (base 0x8058A05C, paso 0x14). Coincide con `_SV_TEAM_INFO` de Xtreme. Permite usar jugadores no publicados (p. ej. Aum Nirvana, SARU Miximax). Solo afecta al equipo que se está usando, y necesita Dolphin con el juego.
+- **Strikers2013-Tools**: extrae e importa archivos de los `.bin` (con sufijo `.dec` para comprimir al importar) y exporta/importa textos. Textos útiles: `1.bin` (texto principal), `5.bin` (descripciones de movimientos), `113.bin` (tutorial), todos en `dat`.
+- **obluda3.github.io**: fuente de la documentación de Xtreme. No aporta nada nuevo sobre el archivo de equipos.
+
+Lo que cambia respecto a lo anterior:
+- Para **equipos** hay una vía sin tocar archivos (Gecko, solo equipo actual). La vía por archivo sigue bloqueada por el índice de dat del archivo de equipos.
+- Las **listas de nombres no coinciden** entre fuentes para los ids no usados: teambuilder llama 349 a "Aum Nirvana" y 411 a "Flora Miximax"; el editor llama 349 a Shinoyama y 411 a Fran MM; el enum de Xtreme llama 411 a Yobi. Hay que comprobarlo antes de activar nada.
+
 ## Próximos pasos
 1. Investigar por qué el código de Infinity no arranca sobre la base traducida.
 2. Probar cambios de datos sencillos (perfil de carga, precio) con el script de superposición.
