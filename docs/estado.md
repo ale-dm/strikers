@@ -41,6 +41,12 @@ Modificar el mod Xtreme 2.0 (y la versión con textos en castellano) de Strikers
 - Nada de esto está comprobado en el juego: referenciado en el código no significa jugable.
 - `player_edit.py` avisa cuando una copia (`--add-from`) o una edición deja a dos jugadores con el mismo equipo y posición en la lista.
 
+## Equipos (sin comprobar en el juego)
+- Un equipo de juego se identifica por su **emblema**: `PLAYER_DEF` tiene `emblem` (0x54), y Xtreme usa `GetTeamIDToEmblemLL` para pasar de equipo a emblema. El enum `Emblem` tiene 101 entradas (`includes/enums.h`).
+- Las definiciones de equipo (`TEAM_DEF`: nombre, índice, formación, entrenador, mánager, fuerza y lista de `TEAM_PLAYER`) están en un archivo de equipos aparte, distinto de 40015. El editor lo lee con `TeamFile` y `TeamDef` (`Logic/TeamDef.cs`, `Forms/TeamEditor.cs`). Su escritura rehace los punteros del archivo.
+- No sé en qué índice de `dat` está ese archivo: la documentación de Xtreme deja vacías las secciones "Teams" y "Team Definition", y no aparece en el código que tenemos.
+- Por tanto, añadir un equipo implica: un emblema existente (o nuevo, con sus modelos y texturas en `grp`), una entrada en el archivo de equipos, y que los jugadores tengan ese `team` y `emblem`. No he probado nada de esto.
+
 ## Próximos pasos
 1. Investigar por qué el código de Infinity no arranca sobre la base traducida.
 2. Probar cambios de datos sencillos (perfil de carga, precio) con el script de superposición.
