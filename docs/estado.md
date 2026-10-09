@@ -47,6 +47,26 @@ Modificar el mod Xtreme 2.0 (y la versión con textos en castellano) de Strikers
 - No sé en qué índice de `dat` está ese archivo: la documentación de Xtreme deja vacías las secciones "Teams" y "Team Definition", y no aparece en el código que tenemos.
 - Por tanto, añadir un equipo implica: un emblema existente (o nuevo, con sus modelos y texturas en `grp`), una entrada en el archivo de equipos, y que los jugadores tengan ese `team` y `emblem`. No he probado nada de esto.
 
+## Qué se puede modificar (investigado sin archivos del juego)
+Fuentes: `Strikers2013Editor` (obluda3), documentación de Xtreme y `xtreme`. Nada de esto está probado en el juego.
+
+| Área | Archivo | Formato conocido | Herramienta | Notas |
+|---|---|---|---|---|
+| Jugadores | 40015 (2ª sección) | Sí (`PlayerDef.cs`) | `player_edit.py` | Precio, elemento, perfil de carga, altura, equipo, emblema, posición en la lista |
+| Perfiles de carga | 40015 (1ª sección) | Solo por la doc | No | Incrementos del medidor por acción; algunos perfiles marcados UNUSED |
+| Movimientos | 40081 (`Modified\dat\81.bin`) | Sí (`Move.cs`) | No (solo `MoveEditor`) | Tier, poder base y máximo, TP, elemento, estado, alcance, quién lo usa (`Users`, `Partners`); muchos campos sin nombre |
+| Info de animación de movimientos | Ver `MoveInfo.cs` | Sí (`MoveInfo.cs`) | No (solo `MoveInfoEditor`) | Efectos, uniformes, estadio, rivales |
+| Guardado (partida) | `xtreme2.sav` / `xtreme3.sav` (local) | Sí (`Save.cs`) | `SaveEditor` | Estadísticas, movimientos aprendidos, puntos Inazuma, nombre de perfil, emblema del equipo. Útil para probar desbloqueos sin jugar |
+| Equipos | Archivo de equipos (índice desconocido) | Sí (`TeamDef.cs`) | `TeamEditor` | Ver la sección de equipos |
+| Claves de control | 40011 | Parcial (solo las 2 últimas secciones) | No | Perfiles de control por jugador |
+| Copias de jugador | 40017 | Parcial | No | Versiones de un mismo jugador (grupo ListID) |
+| Reglas de movimientos (código) | `source/moveset_banlist.cpp` | Sí | Kamek + CodeWarrior | Listas de prohibición y de permitidos por jugador/movimiento. Solo en código |
+| Ajustes del mod | `source/xtremeSettings.h` | Sí | Kamek + CodeWarrior | Opciones como mostrar poder, aperturas, teclado, modo mixi. Son ajustes en el menú, no datos |
+| Miximax | Código (dirección 0x804c8b90) | Parcial | Kamek + CodeWarrior | No está en ningún archivo |
+| Audio | Archivos `stream` | — | Brawlcrate (externo) | Según la doc de Xtreme |
+
+Lo más directo sin el juego: documentar y preparar un editor de movimientos similar a `player_edit.py`. Hay que verificar antes el tamaño exacto del registro en `Move.cs`, porque tiene muchos campos sin nombre.
+
 ## Próximos pasos
 1. Investigar por qué el código de Infinity no arranca sobre la base traducida.
 2. Probar cambios de datos sencillos (perfil de carga, precio) con el script de superposición.
