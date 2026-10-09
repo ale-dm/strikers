@@ -11,6 +11,7 @@ hace falta tu propia copia legal del juego y los parches se obtienen de sus auto
 - `scripts/build_dat15_overlay.py`: atajo de `player_edit.py` que cambia solo la altura (Scale) de Endo (id 1).
 - `scripts/dol_peek.py`: muestra los bytes de un `main.dol` en direcciones concretas, para comparar ejecutables de distintas revisiones.
 - `docs/estado.md`: estado del proyecto y pruebas realizadas.
+- `docs/referencia_jugadores.md`: valores de `element`, `bodytype`, `gender`, `position` y nombres de los perfiles de carga (`charge`).
 
 ## Cómo usarlo
 
