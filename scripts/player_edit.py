@@ -4,8 +4,10 @@
 # Uso:
 #   python player_edit.py <15.bin_original> --id 1 --show
 #   python player_edit.py <15.bin_original> <15.bin_salida> --id 1 scale=1500 price=300
+#   python player_edit.py <15.bin_original> <15.bin_salida> --add-from 1 name=NuevoJugador
 #
 # Valores: enteros (decimal o 0x...) o nombres de la lista de ENUMS (p. ej. element=fire).
+# --add-from copia el registro de ese id y lo añade al final con el siguiente id libre.
 # <15.bin_original> no se modifica. Offsets y tipos: Strikers2013Editor/Logic/PlayerDef.cs
 # (obluda3/strikers2013editor). Todos los enteros son big endian.
 import argparse
@@ -54,6 +56,21 @@ def find_player(d, pid):
             return off
     sys.exit("no hay ningun jugador con id %d" % pid)
 
+def add_player(d, src_id):
+    # Añade al final una copia del registro src_id con el siguiente id libre.
+    count = struct.unpack(">I", d[HEADER:HEADER+4])[0]
+    end = REC + (count - 1) * SIZE
+    if len(d) != end:
+        sys.exit("hay %d bytes despues de los registros; no se puede añadir con seguridad" % (len(d) - end))
+    src = find_player(d, src_id)
+    ids = [struct.unpack(">i", d[REC + k * SIZE:REC + k * SIZE + 4])[0] for k in range(count - 1)]
+    new_id = max(ids) + 1
+    record = bytearray(d[src:src + SIZE])
+    struct.pack_into(">i", record, 0, new_id)
+    d += record
+    struct.pack_into(">I", d, HEADER, count + 1)
+    return len(d) - SIZE, new_id
+
 def read_field(d, off, name):
     foff, fmt, _ = FIELDS[name]
     start = off + foff
@@ -86,24 +103,34 @@ def write_field(d, off, name, value, parser):
     d[start:start+len(packed)] = packed
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Edita campos de un jugador en 40015 (15.bin).")
+    parser = argparse.ArgumentParser(description="Edita o añade jugadores en 40015 (15.bin).")
     parser.add_argument("src", help="15.bin original (descomprimido o ShadeLz)")
     parser.add_argument("dst", nargs="?", help="archivo de salida")
-    parser.add_argument("--id", type=int, required=True, help="id del jugador (p. ej. 1 = Endo)")
+    parser.add_argument("--id", type=int, help="id del jugador a editar (p. ej. 1 = Endo)")
+    parser.add_argument("--add-from", type=int, metavar="ID", help="añade un jugador nuevo copiando el de este id")
     parser.add_argument("--show", action="store_true", help="muestra los campos y no escribe nada")
     parser.add_argument("cambios", nargs="*", metavar="campo=valor")
     args = parser.parse_args(argv)
 
+    if (args.id is None) == (args.add_from is None):
+        parser.error("usa --id o --add-from (uno de los dos)")
+
     d = bytearray(decompress(open(args.src, "rb").read()))
-    off = find_player(d, args.id)
 
     if args.show:
+        off = find_player(d, args.id)
         for name, (foff, _, desc) in FIELDS.items():
             print("%-14s 0x%03X  %-24s %s" % (name, foff, read_field(d, off, name), desc))
         return 0
 
-    if not args.dst or not args.cambios:
+    if not args.dst or (not args.cambios and args.add_from is None):
         parser.error("hacen falta <salida> y al menos un campo=valor (o usa --show)")
+
+    if args.add_from is not None:
+        off, new_id = add_player(d, args.add_from)
+        print("nuevo jugador id %d (copia de %d)" % (new_id, args.add_from))
+    else:
+        off = find_player(d, args.id)
 
     for item in args.cambios:
         name, sep, text = item.partition("=")

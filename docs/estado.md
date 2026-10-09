@@ -23,7 +23,14 @@ Modificar el mod Xtreme 2.0 (y la versión con textos en castellano) de Strikers
 
 ## Verificado sin el juego
 - `player_edit.py` con un `15.bin` sintético: cada edición cambia solo los bytes del campo; el resto de jugadores queda igual; los valores fuera de rango o mal escritos dan error. `build_dat15_overlay.py` produce la misma salida byte a byte que la versión anterior.
+- `--add-from`: añade un registro copiado con id = máximo + 1 y actualiza el contador. Probado con un `15.bin` sintético; se rechaza si hay bytes tras los registros.
 - Pendiente: comprobar en Dolphin los valores de `element`, `charge` y `price`, y que el juego acepta el archivo con varios cambios a la vez.
+
+## Añadir jugadores: límites conocidos (sin comprobar en el juego)
+- Los ids de serie son 1–411 (`includes/enums.h` de obluda3/strikers2013-xtreme). Un jugador nuevo tendría id 412 o superior.
+- `source/randomMode.cpp` elige `shdRndi(1, 0x19C)` (1–412 de rango, con banned) y cuenta reclutados con `i < P_12502YOBI` (411): un jugador nuevo no entra en el aleatorio ni en esos contadores sin cambiar ese código.
+- Las banderas de jugador (reclutado, desbloqueado) están indexadas por id en la partida; no está claro el tamaño de esa tabla.
+- Hace falta que el jugador esté en una plantilla de equipo, con modelos, rostro y textos. Eso está en otros archivos, no en 40015.
 
 ## Próximos pasos
 1. Investigar por qué el código de Infinity no arranca sobre la base traducida.
