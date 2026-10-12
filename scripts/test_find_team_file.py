@@ -11,6 +11,7 @@ def make_team_file(team_count=3, stat_count=2, kiz_count=1):
     be(0x10, team_count); be(0x14, 0x24); be(0x18, stat_count); be(0x1C, 0x24 + stat_count * 0x14); be(0x20, kiz_count)
     for i, p in enumerate([0x60, 0x78]):
         be(0x100 + 4 * i, p)
+        be(p, 0x90); be(p + 0x10, 0xA0); be(p + 0x14, 0xB0)  # nombre, jugadores, metadatos
     be(0x100 + 4 * (team_count - 1), 0)
     return d
 

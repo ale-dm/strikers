@@ -38,6 +38,13 @@ def check_team_file(d):
         return None
     if any(not HEADER <= p < len(d) for p in ptrs[:-1]):
         return None
+    # Cada TEAM_DEF (0x18 bytes): nombre, índice, formación/entrenador/mánager/fuerza, jugadores, metadatos
+    for p in ptrs[:-1]:
+        if p + 0x18 > len(d):
+            return None
+        name_off, players_off, meta_off = u32(d, p), u32(d, p + 0x10), u32(d, p + 0x14)
+        if not all(HEADER <= o < len(d) for o in (name_off, players_off, meta_off)):
+            return None
     if HEADER + stat_count * STAT_SIZE > kiz_off:
         return None
     if kiz_off + kiz_count * KIZUNA_SIZE > len(d):
@@ -65,7 +72,7 @@ def main(argv=None):
     folder = argv[0]
     hits = []
     for name in sorted(os.listdir(folder)):
-        m = re.fullmatch(r"(\d+)\.bin", name)
+        m = re.fullmatch(r"(\d+)\.bin(\.dec)?", name)
         if not m:
             continue
         mode, info = inspect(os.path.join(folder, name))
@@ -75,7 +82,7 @@ def main(argv=None):
         print("ningún archivo parece el archivo de equipos")
         return 1
     for name, mode, info in hits:
-        idx = int(name[:-4])
+        idx = int(re.match(r"\d+", name).group(0))
         print("%s  (dat %d -> archivo 400%02d)  %s: %d equipos, %d stats, %d entradas kizuna"
               % (name, idx, idx, mode, info["equipos"], info["stats"], info["kizuna"]))
     return 0

@@ -83,7 +83,7 @@ Lo que cambia respecto a lo anterior:
 - Sin comprobar: que el tipo `02` escriba 32 bits como asumimos, y que el juego acepte ids de jugador repetidos o emblemas por encima de 57 (la lista del teambuilder).
 
 ## Índice del archivo de equipos (en curso)
-- `scripts/find_team_file.py` busca en una carpeta de dat (`N.bin`) los archivos con la cabecera de `TeamFile` (3 secciones, 0x24 en 0x08 y 0x14, punteros válidos, último puntero 0). Acepta archivos sin comprimir o comprimidos con ShadeLz.
+- `scripts/find_team_file.py` busca en una carpeta de dat (`N.bin`) los archivos con la cabecera de `TeamFile` (3 secciones, 0x24 en 0x08 y 0x14, punteros válidos, último puntero 0). Acepta `N.bin` y `N.bin.dec`, sin comprimir o comprimidos con ShadeLz. Comprueba además los punteros de cada `TEAM_DEF`.
 - Probado solo con una carpeta sintética (dos archivos de equipos y tres señuelos). **Sin probar en el juego ni con el mod real.** El índice de dat resultante se traduce a `400NN` (p. ej. dat 7 → 40007).
 - Pendiente: ejecutarlo sobre `Modified/dat` de tu copia del mod y confirmar que el juego carga ese índice.
 
