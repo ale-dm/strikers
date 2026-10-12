@@ -1,0 +1,15 @@
+<wiidisc version="1">
+	<id game="S5S" />
+	<options>
+		<section name="subB">
+			<option name="Datos">
+				<choice name="Pieza de prueba">
+					<patch id="subB" />
+				</choice>
+			</option>
+		</section>
+	</options>
+	<patch id="subB">
+		<folder external="/subB/files" disc="/" recursive="true" create="true" />
+	</patch>
+</wiidisc>

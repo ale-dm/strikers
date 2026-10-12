@@ -1,0 +1,25 @@
+{
+  "base-file": "<RUTA_A_TU_ISO>",
+  "display-name": "<NOMBRE_DEL_PREAJUSTE>",
+  "riivolution": {
+    "patches": [
+      {
+        "options": [
+          { "choice": 2, "option-name": "Version", "section-name": "Xtreme 13" },
+          { "choice": 0, "option-name": "(Wii Only) Texture Patch", "section-name": "Xtreme 13" }
+        ],
+        "root": "<CARPETA_RIIVOLUTION>/",
+        "xml": "<CARPETA_RIIVOLUTION>/riivolution/Xtreme.xml"
+      },
+      {
+        "options": [
+          { "choice": 0, "option-name": "Datos", "section-name": "subB" }
+        ],
+        "root": "<CARPETA_PRUEBAS>/",
+        "xml": "<CARPETA_PRUEBAS>/riivolution/subB.xml"
+      }
+    ]
+  },
+  "type": "dolphin-game-mod-descriptor",
+  "version": 1
+}

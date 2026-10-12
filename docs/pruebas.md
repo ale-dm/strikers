@@ -30,3 +30,11 @@ Todas las pruebas usan la misma base: Xtreme 2.0 de obluda3 (Riivolution) sobre 
 - Entender por qué el código de Infinity no arranca sobre la copia traducida.
 - Comprobar en el juego que aparecen los equipos y personajes nuevos de Infinity.
 - Destin y Harper no aparecen en el título.
+
+## Cómo montar una prueba por piezas (receta)
+1. Copia la carpeta de la pieza que quieras probar (por ejemplo `Modified/dat` del paquete) dentro de `<CARPETA_PRUEBAS>/subB/files/Modified/`.
+2. Copia `templates/pieza_riivolution.xml` a `<CARPETA_PRUEBAS>/riivolution/subB.xml` (cambia `subB` por el nombre de tu pieza si quieres varias).
+3. Copia `templates/descriptor_dolphin.json` como descriptor, rellena las rutas (`<...>`) y añade un bloque de `patches` por cada pieza.
+4. En Dolphin: File → Open con el descriptor. El orden de los `patches` importa: lo que va después sobrescribe lo anterior.
+
+Aviso: si una pieza trae su propio `CustomCode.bin`, el código de la base puede seguir ganando. Compruébalo con el nombre de partida que muestra el juego (ver hallazgos de arriba).
