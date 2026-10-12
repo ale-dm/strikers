@@ -82,6 +82,11 @@ Lo que cambia respecto a lo anterior:
 - Las pruebas comparan la salida con valores calculados a mano desde el código C#. **No se ha ejecutado el C# (no hay .NET aquí)** y **no se ha probado en Dolphin**.
 - Sin comprobar: que el tipo `02` escriba 32 bits como asumimos, y que el juego acepte ids de jugador repetidos o emblemas por encima de 57 (la lista del teambuilder).
 
+## Índice del archivo de equipos (en curso)
+- `scripts/find_team_file.py` busca en una carpeta de dat (`N.bin`) los archivos con la cabecera de `TeamFile` (3 secciones, 0x24 en 0x08 y 0x14, punteros válidos, último puntero 0). Acepta archivos sin comprimir o comprimidos con ShadeLz.
+- Probado solo con una carpeta sintética (dos archivos de equipos y tres señuelos). **Sin probar en el juego ni con el mod real.** El índice de dat resultante se traduce a `400NN` (p. ej. dat 7 → 40007).
+- Pendiente: ejecutarlo sobre `Modified/dat` de tu copia del mod y confirmar que el juego carga ese índice.
+
 ## Próximos pasos
 1. Investigar por qué el código de Infinity no arranca sobre la base traducida.
 2. Probar cambios de datos sencillos (perfil de carga, precio) con el script de superposición.
